@@ -1,0 +1,349 @@
+<div class="modal-header cdr">
+  <h3 class="modal-title cdr" id="modal-title">Glyph</h3>
+</div>
+
+<div class="modal-body cdr" id="modal-body">
+  <div id="glyphDefinition">
+    <text>
+      Each utterance can be annotated by statistical measures that are calculated by the framework.
+      Shallow text mining and linguistic processing yields a set of 53 features that encode various properties of the debate.
+      All of them serve as operationalizing features for analyzing communicative strategies in deliberative communication.
+    </text><br><br>
+    <div id="glyphEncoding">
+      <text><b>Glyph Encoding:</b></text><br>
+      <text>
+        The glyph is limited up to 7 measures that can be chosen from the list.
+        The List contains only measures which have a variance greater zero to reduce the amount of measures, they were also sorted in descending order of standard deviation.
+        The larger the standard deviation the more interesting, because there is more change in the data. <br>
+        <br>
+        Each measure is represented as a circle and encodes the value in the form of color.
+        Around this circle the min and max value of the respective measure is mapped, which not only indicates the range but also represents the data type.
+        The left side of the circle border encodes the min value and the right side the max value.
+      </text>
+
+      <div>
+        <svg width="60" height="60">
+          <defs>
+            <clipPath id="cut-off-left">
+              <rect x="20" y="0" width="20" height="60"></rect>
+            </clipPath>
+            <clipPath id="cut-off-right">
+              <rect x="0" y="0" width="20" height="60"></rect>
+            </clipPath>
+          </defs>
+          <circle cx="20" cy="30" r="12" style="fill:#fedd90"></circle>
+          <circle cx="20" cy="30" r="12" clip-path="url(#cut-off-left)" style="fill:none;  stroke:#ab0f45; stroke-width: 5px"></circle>
+          <circle cx="20" cy="30" r="12" clip-path="url(#cut-off-right)" style="fill:none; stroke:#384ca0;  stroke-width: 5px"></circle>
+        </svg>
+      </div>
+
+      <div id="glyphEncodingContainer">
+        <text><b>Binary:</b></text><br><br>
+        <div style="display: flex">
+          <div style="background: lightgrey; width:25px; height:25px; margin-right: 3px" ></div>
+          <text style="margin-right: 10px; font-size: 16px; padding-top: 5px">0</text>
+          <div style="background: black; width:25px; height:25px; margin-right:3px"></div>
+          <text style="font-size: 16px; padding-top: 5px">1</text>
+        </div>
+        <br>
+        <text><b>Bipolar Continuous:</b></text><br><br>
+        <div id="glyphEncodingBipolar">
+
+        </div>
+        <text><b>Numerical Continuous:</b></text><br><br>
+        <div id="glyphEncodingNumerical">
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <input id="showMeasuresExplanation" type="checkbox" ng-model="checkedShowMeasuresExplanation">
+  <label for="showMeasuresExplanation">show more</label>
+
+  <div id="measuresExplanation" ng-show="checkedShowMeasuresExplanation">
+    <text>
+      The analysis of deliberative communication comes from political science and comprises 4 dimensions.<br>
+      <ul>
+        <li>Argumentation & Justification</li>
+        <li>Accommodation</li>
+        <li>Atmosphere & Respect</li>
+        <li>Participation</li>
+      </ul>
+      Each dimension has further sub-dimensions which are listed below:
+    </text><br><br>
+
+    <text class="measureDimensions">Argumentation & Justification</text> <br>
+    <table>
+      <tbody>
+      <tr>
+        <td>Information Certainty</td>
+        <td><p class="measureItemModalWindowGlyph" value="epistemic value">Epistemic Value</p></td>
+        <td >
+          <p>Numerical Bipolar</p>
+        </td>
+      </tr>
+      <tr>
+        <td>Reason-giving</td>
+        <td>
+          <p class="measureItemModalWindowGlyph" value="reason">Reason</p>
+          <p class="measureItemModalWindowGlyph" value="conclusion">Conclusion</p>
+        </td>
+        <td>
+          <p>Numerical Continuous</p>
+          <p>Numerical Continuous</p>
+        </td>
+      </tr>
+      <tr >
+        <td >Event Modality</td>
+        <td >
+          <p class="measureItemModalWindowGlyph" value="event modality obligation">Obligation</p>
+          <p class="measureItemModalWindowGlyph" value="event modality volition">Volition</p>
+          <p class="measureItemModalWindowGlyph" value="event modality permission" >Permission</p>
+          <p class="measureItemModalWindowGlyph" value="event modality alternative" >Alternative</p>
+          <p class="measureItemModalWindowGlyph" value="event modality reluctance">Reluctance</p>
+        </td>
+        <td>
+          <p>Binary</p>
+          <p>Binary</p>
+          <p>Binary</p>
+          <p>Binary</p>
+          <p>Binary</p>
+        </td>
+      </tr>
+      <tr >
+        <td>
+          <p>Common Ground</p>
+        </td>
+        <td>
+          <p class="measureItemModalWindowGlyph" value="common ground">Common Ground (CG)</p>
+          <p class="measureItemModalWindowGlyph" value="reject common ground">Reject CG</p>
+          <p class="measureItemModalWindowGlyph" value="activate common ground">Activate CG</p>
+        </td>
+        <td>
+          <p>Binary</p>
+          <p>Binary</p>
+          <p>Binary</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Information Exchange</p>
+        </td>
+        <td>
+          <p class="measureItemModalWindowGlyph" value="information giving">Information Giving</p>
+          <p class="measureItemModalWindowGlyph" value="elucidation">Elucidation</p>
+          <p class="measureItemModalWindowGlyph" value="information seeking">Information Seeking</p>
+          <p class="measureItemModalWindowGlyph" value="information refusing">Information Refusing</p>
+        </td>
+        <td>
+          <p>Binary</p>
+          <p>Binary</p>
+          <p>Binary</p>
+          <p>Binary</p>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <br>
+    <text class="measureDimensions">Accommodation</text> <br>
+    <table>
+      <tbody>
+      <tr>
+        <td>Condition</td>
+        <td>
+          <p class="measureItemModalWindowGlyph" value="condition">Condition</p>
+          <p class="measureItemModalWindowGlyph" value="consequence">Consequence</p>
+        </td>
+        <td>
+          <p>Numerical Continuous</p>
+          <p>Numerical Continuous</p>
+        </td>
+      </tr>
+      <tr>
+        <td >Agreement vs.<br />Disagreement</td>
+        <td>
+          <p class="measureItemModalWindowGlyph" value="arrangement count">Arrangement Count</p>
+          <p class="measureItemModalWindowGlyph" value="arrangement relation">Arrangement Relation</p>
+        </td>
+        <td>
+          <p>Numerical Continuous</p>
+          <p>Numerical Bipolar</p>
+        </td>
+      </tr>
+      <tr>
+        <td>Agreement</td>
+        <td>
+          <p class="measureItemModalWindowGlyph" value="consensus">Consensus</p>
+          <p class="measureItemModalWindowGlyph" value="agreement">Agreement</p>
+          <p class="measureItemModalWindowGlyph" value="consensus willing">Consensus Willing</p>
+          <p class="measureItemModalWindowGlyph" value="minimal consensus">Minimal Consensus</p>
+          <p class="measureItemModalWindowGlyph" value="concession">Concession</p>
+        </td>
+        <td>
+          <p>Binary</p>
+          <p>Binary</p>
+          <p>Binary</p>
+          <p>Binary</p>
+          <p>Numerical Continuous</p>
+        </td>
+      </tr>
+      <tr>
+        <td>Disagreement</td>
+        <td>
+          <p class="measureItemModalWindowGlyph" value="opposition">Opposition</p>
+          <p class="measureItemModalWindowGlyph" value="dissent">Dissent</p>
+          <p class="measureItemModalWindowGlyph" value="disagreement">Disagreement</p>
+          <p class="measureItemModalWindowGlyph" value="activate opposition" >Activate Opposition</p>
+          <p class="measureItemModalWindowGlyph" value="contrast">Contrast</p>
+        </td>
+        <td>
+          <p>Numerical Continuous</p>
+          <p>Binary</p>
+          <p>Binary</p>
+          <p>Binary</p>
+          <p>Binary</p>
+        </td>
+      </tr>
+      <tr>
+        <td>Arguing vs.<br />Bargaining</td>
+        <td>
+          <p class="measureItemModalWindowGlyph" value="negotiation relation">Negotiation relation</p>
+          <p class="measureItemModalWindowGlyph" value="negotiation count">Negotiation Count</p>
+          <p class="measureItemModalWindowGlyph" value="arguing">Arguing</p>
+          <p class="measureItemModalWindowGlyph" value="bargaining">Bargaining</p>
+        </td>
+        <td>
+          <p>Numerical Bipolar</p>
+          <p>Numerical Continuous</p>
+          <p>Binary</p>
+          <p>Binary</p>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <br>
+    <text class="measureDimensions">Atmosphere & Respect</text> <br>
+    <table>
+      <tbody>
+      <tr>
+        <td>Emotion</td>
+        <td >
+          <p class="measureItemModalWindowGlyph" value="emotion count">Emotion Count</p>
+          <p class="measureItemModalWindowGlyph" value="emotion relation">Emotion Relation</p>
+        </td>
+        <td >
+          <p>Numerical Continuous</p>
+          <p>Numerical Bipolar</p>
+        </td>
+      </tr>
+      <tr >
+        <td >Interruptions</td>
+        <td ><p class="measureItemModalWindowGlyph" value="interruption">Interruption</p></td>
+        <td >Binary</td>
+      </tr>
+      <tr >
+        <td >Responsiveness</td>
+        <td >
+          <p class="measureItemModalWindowGlyph" value="topic shift">Topic Shift</p>
+          <p class="measureItemModalWindowGlyph" value="self previous recurrence">Self Previous Recurrence</p>
+          <p class="measureItemModalWindowGlyph" value="self following recurrence">Self Following Recurrence</p>
+          <p class="measureItemModalWindowGlyph" value="self recurrence shift">Self Recurrence Shift</p>
+          <p class="measureItemModalWindowGlyph" value="topic persistence">Topic Persistence</p>
+        </td>
+        <td>
+          <p>Numerical Bipolar</p>
+          <p>Numerical Continuous</p>
+          <p>Numerical Continuous</p>
+          <p>Numerical Bipolar</p>
+          <p>Numerical Bipolar</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Conventional<br />Politeness</p>
+        </td>
+        <td>
+          <p class="measureItemModalWindowGlyph" value="politeness">Politeness</p>
+          <p class="measureItemModalWindowGlyph" value="impatience">Impatience</p>
+          <p class="measureItemModalWindowGlyph" value="unobtrusiveness">Unobtrusiveness</p>
+        </td>
+        <td>
+          <p>Numerical Continuous</p>
+          <p>Binary</p>
+          <p>Binary</p>
+        </td>
+      </tr>
+      <tr>
+        <td >
+          <p>Face Issues</p>
+        </td>
+        <td>
+          <p class="measureItemModalWindowGlyph" value="resignation acceptance">Resignation Acceptance</p>
+        </td>
+        <td>
+          <p>Numerical Continuous</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Sentiments</p>
+        </td>
+        <td>
+          <p class="measureItemModalWindowGlyph" value="sentiment">Sentiment</p>
+        </td>
+        <td>
+          <p>Numerical Bipolar</p>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <br>
+    <text class="measureDimensions">Participation</text> <br>
+    <table>
+      <tbody>
+      <tr>
+        <td>Equality of Speaker<br /> Capabilities</td>
+        <td>
+          <p class="measureItemModalWindowGlyph" value="average sentence complexity">Sentence Complexity</p>
+          <p class="measureItemModalWindowGlyph" value="maas index">Maas Index</p>
+          <p class="measureItemModalWindowGlyph" value="number of filler words">Filler Words</p>
+          <p class="measureItemModalWindowGlyph" value="stalling">Stalling</p>
+        </td>
+        <td>
+          <p>Numerical Bipolar</p>
+          <p>Numerical Bipolar</p>
+          <p>Numerical Continuous</p>
+          <p>Binary</p>
+        </td>
+      </tr>
+      <tr>
+        <td>Equality of Speaker<br />Participation</td>
+        <td>
+          <p class="measureItemModalWindowGlyph" value="expected probability to speak">Exp Prob to Speaker</p>
+          <p class="measureItemModalWindowGlyph" value="moving gini index">Moving Gini Index</p>
+        </td>
+        <td>
+          <p>Numerical Bipolar</p>
+          <p>Numerical Bipolar</p>
+        </td>
+      </tr>
+      <tr>
+        <td>Topic Comprehensiveness</td>
+        <td><p class="measureItemModalWindowGlyph" value="network density">Network Density</p></td>
+        <td>Numerical Bipolar</td>
+      </tr>
+      </tbody>
+    </table>
+    <br>
+    <p>** note: not available measures are shown in reduced opacity</p>
+    <p>** tip: hover over the measures for a short description</p>
+  </div>
+
+
+</div>
+
+<div class="modal-footer cdr">
+  <button class="btn btn-primary btn-closeModal-cdr" type="button" ng-click="ok()">Ok</button>
+</div>

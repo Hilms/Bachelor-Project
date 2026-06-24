@@ -1,0 +1,66 @@
+<div class="modal-header cdr">
+  <h3 class="modal-title cdr" id="modal-title">Topics</h3>
+</div>
+
+<div class="modal-body cdr" id="modal-body">
+  <div id="topicDefinition">
+    <text>
+      Topic modeling provides a suite of algorithms to discover a set of hidden thematic structures ("topics" - recurring themes that are discussed) in large collections of texts.
+      Topic modeling refers to the task of identifying topics that best describes a set of documents and will only emerge during the topic modelling process (therefore called latent).
+      The results of topic modeling algorithms can be used to summarize, visualize, explore, and theorize about a corpus.
+    </text><br>
+    <input id="readMoreTopicModeling" type="checkbox" ng-model="checkedReadMoreTopicModeling">
+    <label for="readMoreTopicModeling">read more ...</label> <br>
+    <text ng-show="checkedReadMoreTopicModeling">
+      Topic modeling is a form of unsupervised statistical machine learning - only the words in the document are modeled.
+      It is like document clustering but with with one important advantage - instead of each document belonging to a single cluster or topic, a document can belong to many different clusters or topics.
+      <br><br>
+      Latent Dirichlet Allocation (LDA) is an unsupervised algorithm and determines a fixed set of topics. Each topic is represented/described by a set of words.
+      The goal of LDA is to map all the documents to the topics in a way, such that the words in each document are mostly captured by those imaginary topics.
+      <br><br>
+      Besides LDA another one is provided, the Incremental Hierarchical Topic Model (IHTM).
+      IHTM supports the active incorporation of the user’s domain knowledge in every step through explicit model manipulation interactions.
+      In addition, users can initialize the model with expected topic seeds.
+      This supervised human-in-the-loop process targets maximum improvement for the topic modelling.
+    </text>
+  </div>
+  <br>
+  <div id="topicEncoding">
+    <text>Your selected topic modeling algorithm: <b>{{topicModellingAlgorithm[0]}}</b></text>
+    <br><br>
+    <text><b>Topic Encoding:</b> </text>
+    <br>
+    <text>
+      In our case we calculate for each utterance different probabilities with which this utterance belongs to a certain topic.
+      The topic with the highest probability for an utterance will then be annotated.
+      <br><br>
+      Therefore a circle with the topic number will be placed and corresponding keywords within an utterance will be highlighted.
+    </text>
+    <br><br>
+    <div id="topicEncodingContainer">
+      <div style=" border-radius: 50%; width: 30px; height: 30px; padding: 4px; background: lightgrey;text-align: center; font-size: 16px; font-weight: bold">
+        {{convertIntToRoman(4, 1)}}
+      </div>
+      <div>
+        Lorem ipsum <text style="text-decoration: underline; font-family: monospace">dolor</text> sit amet, consetetur sadipscing elitr,
+        sed diam nonumy eirmod tempor invidunt ut <text style="text-decoration: underline; font-family: monospace">labore</text> et dolore magna aliquyam erat, sed diam voluptua.
+        At vero eos et accusam et <text style="text-decoration: underline; font-family: monospace">justo</text> duo dolores et ea rebum.
+        Stet clita kasd gubergren, no sea <text style="text-decoration: underline; font-family: monospace">takimata</text> sanctus est Lorem ipsum dolor sit amet.
+      </div>
+
+    </div>
+  </div>
+  <br>
+  <input id="showTopicsAndKeywords" type="checkbox" ng-model="checkedTopicsAndKeywords">
+  <label for="showTopicsAndKeywords">show topics and their keywords</label>
+  <div id="measuresExplanation" ng-show="checkedTopicsAndKeywords" style="overflow-x: scroll">
+   <div ng-repeat="(key,val) in topicDescriptorsList[debateIndex][0]" style="white-space: nowrap">
+     <text><b>Topic {{convertIntToRoman(key, 1)}}:</b> {{val}}</text>
+   </div>
+  </div>
+
+</div>
+
+<div class="modal-footer cdr">
+  <button class="btn btn-primary btn-closeModal-cdr" type="button" ng-click="ok()">Ok</button>
+</div>

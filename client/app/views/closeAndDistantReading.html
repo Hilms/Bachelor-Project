@@ -1,0 +1,227 @@
+<!--
+* Created by Hilmi-Can on 27.12.19.
+* BACHELOR PROJECT
+-->
+
+<div>
+  <!-- create tabs -->
+  <ul class="nav nav-tabs" id="documentTabs-cdr" role="tablist">
+    <li class="nav-item-cdr" ng-repeat="filename in extractFileName()">
+      <a class="nav-link active" data-toggle="tab" data-target=#{{filename}} role="tab" aria-controls={{filename}}
+         aria-selected="false">{{filename}}</a>
+    </li>
+  </ul>
+
+
+  <div id="MainCloseAndDistantReadingCtrl" ng-style="layout">
+
+    <div id="loading_indicator-cdr">
+      <div class="lds-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div id="loading_text-cdr">loading ... </div>
+    </div>
+
+    <div class="text-center" id=intro-cdr ng-show="showIntro">
+      Select a debate to analyse 🔍
+    </div>
+
+    <!--individual tabs and their tab contents -->
+    <div class="tab-content" id="tabContents-cdr">
+
+      <!-- tab -->
+      <div class="tab-pane fade" ng-repeat="filename in extractFileName()" id={{filename}} role="tabpanel"
+           aria-labelledby={{filename}}-tab>
+        <!-- tab content -->
+        <div class="row-sm-12 closeDistantReading {{filename}}">
+          <div class="col-sm-2" id="tool_container-cdr {{filename}}" ng-style="layoutToolContainer">
+
+            <input id="posCheckBox-cdr {{filename}}" type="checkbox" ng-click="annotate_pos(checkedPos[$index],filename,$index)" ng-model="checkedPos[$index]">
+            <label class="checkboxLabel-cdr {{filename}}" for="posCheckBox-cdr {{filename}}">POS</label>
+            <button type="button" class="btn btn-primary btn-circle" ng-click="launchPosTagInfo($index)"><i class="fa fa-question cdr"></i></button>
+            <div ng-show="showCategoriesPos.showCategoriesPosOfTab{{$index}}" class="categoryListForPos-cdr {{filename}}">
+              <text id="categoryPosText-cdr">View Options:</text>
+              <div class="categoryPosItem-cdr" ng-repeat="category in posTagSetList[$index]">
+                <input class="categoryPosCheckbox-cdr {{category}} {{filename}}" id="checkbox-cdr {{category}} {{filename}}" type="checkbox" ng-model="checkedPosCategoriesOfTab[$parent.$index][$index]" ng-change="showSelectedPosCategories(category, checkedPosCategoriesOfTab[$parent.$index][$index], filename, $parent.$index)" />
+                <label class="categoryPosCheckboxLabel-cdr {{category}} {{filename}}" for="checkbox-cdr {{category}} {{filename}}">{{category}} - {{pennTreeBankTags[category]}}</label>
+              </div>
+              <div class="categoryPosItem-cdr">
+                <input class="categoryPosCheckbox-cdr P {{filename}}" id="checkbox-cdr P {{filename}}" type="checkbox"  ng-model="checkedPosCategoriesOfTab[$index][posTagSetList[$index].length]" ng-change="showSelectedPosCategories('P', checkedPosCategoriesOfTab[$index][posTagSetList[$index].length], filename, $index)" />
+                <label class="categoryPosCheckboxLabel-cdr P {{filename}}" for="checkbox-cdr P {{filename}}"> P - punctuation</label>
+              </div>
+            </div>
+            <div ng-show="showCategoriesPos.showCategoriesPosOfTab{{$index}}" class="viewOptionsPosBtnContainer-cdr {{filename}}">
+              <button type="button" class="btn btn-primary viewOptionsPosClearBtn-cdr {{filename}}" ng-click="clearViewOptionsPos(filename, $index)"  disabled><i class="fa fa-remove cdr"></i></button>
+            </div>
+            <br>
+
+            <input id="sentimentCheckBox-cdr {{filename}}" type="checkbox" ng-click="annotate_sentiment(checkedSentiment[$index], filename, $index)" ng-model="checkedSentiment[$index]">
+            <label class="checkboxLabel-cdr {{filename}}" for="sentimentCheckBox-cdr {{filename}}">SENTIMENT</label>
+            <button type="button" class="btn btn-primary btn-circle" ng-click="launchSentimentInfo()"><i class="fa fa-question cdr"></i></button>
+            <div ng-show="showCategoriesSentiment.showCategoriesSentimentOfTab{{$index}}" class="categoryListForSentiment-cdr {{filename}}">
+              <text id="categorySentimentText-cdr">View Options:</text>
+              <div class="categorySentimentItem-cdr">
+                <input class="categorySentimentCheckbox-cdr sentimentNegativeBox {{filename}}" id="checkbox-cdr sentimentNegativeBox {{filename}}" type="checkbox"  ng-model="checkedSentimentCategoriesOfTab[$index][0]" ng-change="showSelectedSentimentCategories('negative', checkedSentimentCategoriesOfTab[$index][0], filename, $index)" />
+                <label class="categoryPosCheckboxLabel-cdr sentimentNegativeBox {{filename}}" for="checkbox-cdr sentimentNegativeBox {{filename}}"> negative </label>
+              </div>
+              <div class="categorySentimentItem-cdr">
+                <input class="categorySentimentCheckbox-cdr sentimentPositiveBox {{filename}}" id="checkbox-cdr sentimentPositiveBox {{filename}}" type="checkbox"  ng-model="checkedSentimentCategoriesOfTab[$index][1]" ng-change="showSelectedSentimentCategories('positive', checkedSentimentCategoriesOfTab[$index][1], filename, $index)" />
+                <label class="categoryPosCheckboxLabel-cdr sentimentPositiveBox {{filename}}" for="checkbox-cdr sentimentPositiveBox {{filename}}"> positive </label>
+              </div>
+            </div>
+            <div ng-show="showCategoriesSentiment.showCategoriesSentimentOfTab{{$index}}" class="viewOptionsSentimentBtnContainer-cdr {{filename}}">
+              <button type="button" class="btn btn-primary viewOptionsSentimentClearBtn-cdr {{filename}}" ng-click="clearViewOptionsSentiment(filename, $index)"  disabled><i class="fa fa-remove cdr"></i></button>
+            </div>
+            <br>
+
+
+            <input id="namedEntitiesCheckBox-cdr {{filename}}" type="checkbox" ng-click="annotate_namedEntities(checkedNamedEntities[$index], filename, $index)" ng-model="checkedNamedEntities[$index]">
+            <label class="checkboxLabel-cdr {{filename}}" for="namedEntitiesCheckBox-cdr {{filename}}">NAMED ENTITIES</label>
+            <button type="button" class="btn btn-primary editNamedEntitiesBtn-cdr {{filename}}" ng-click="editNamedEntities(filename, $index)"  disabled><i class="fa fa-pencil cdr"></i></button>
+            <button type="button" class="btn btn-primary btn-circle" ng-click="launchNamedEntitiesInfo($index)"><i class="fa fa-question cdr"></i></button>
+            <div ng-show="namedEntitesEditChecked" class="editContainer-cdr {{filename}}">
+              <div class="editMultiSelectIndicatorContainer-cdr {{filename}}">
+                <text id="editMultiSelectIndicatorText-cdr">nGram Selection</text>
+                <span class="editMultiSelectIndicator-cdr {{filename}}"></span>
+              </div>
+              <!--
+              <div class="editBtnContainer-cdr {{filename}}">
+                <button type="button" class="btn btn-primary editNamedEntitiesGetOriginBtn-cdr {{filename}}" ng-click="getNamedEntitiesOrigin(filename, $index)"  disabled>reset to origin</button>
+              </div>
+              -->
+            </div>
+            <div ng-show="showCategoriesNamedEntities.showCategoriesNamedEntitiesOfTab{{$index}}" class="categoryListForNamedEntities-cdr {{filename}}">
+              <text id="categoryNamedEntitiesText-cdr">View Options:</text>
+              <div class="categoryNamedEntityItem-cdr" ng-repeat="category in namedEntitiesList[$index]">
+                <div ng-repeat="(key, val) in category">
+                  <input class="categoryNamedEntityCheckbox-cdr {{key}} {{filename}}" id="checkbox-cdr {{key}} {{filename}}" type="checkbox" ng-model="checkedNamedEntityCategoriesOfTab[$parent.$parent.$index][$parent.$index]" ng-change="showSelectedNamedEntityCategories(key, checkedNamedEntityCategoriesOfTab[$parent.$parent.$index][$parent.$index], filename, $parent.$parent.$index)" />
+                  <label class="categoryNamedEntityCheckboxLabel-cdr {{key}} {{filename}}"for="checkbox-cdr {{key}} {{filename}}">{{key}} ({{val.length}} entities)</label>
+                </div>
+              </div>
+            </div>
+            <div ng-show="showCategoriesNamedEntities.showCategoriesNamedEntitiesOfTab{{$index}}" class="viewOptionsNamedEntityBtnContainer-cdr {{filename}}">
+              <button type="button" class="btn btn-primary viewOptionsNamedEntitiesClearBtn-cdr {{filename}}" ng-click="clearViewOptionsNamedEntities(filename, $index)"  disabled><i class="fa fa-remove cdr"></i></button>
+            </div>
+            <br>
+
+            <hr class="toolContainerDivideLine-cdr">
+
+            <input id="speakerCheckBox-cdr {{filename}}" type="checkbox" ng-click="annotate_speaker(checkedSpeaker[$index], filename, $index)" ng-model="checkedSpeaker[$index]">
+            <label class="checkboxLabel-cdr {{filename}}" for="speakerCheckBox-cdr {{filename}}">SPEAKER</label>
+            <button type="button" class="btn btn-primary btn-circle" ng-click="launchSpeakerInfo($index)"><i class="fa fa-question cdr"></i></button>
+            <div ng-show="checkedSpeaker[$index]" class="speakerFilterList-cdr {{filename}}">
+              <text id="speakerText-cdr">Filter speaker by:</text>
+              <div class="speakerItem-cdr" ng-repeat="speaker in speakerList[$index]">
+                <input class="speakerCheckbox-cdr {{speaker}} {{filename}}" id="checkbox-cdr {{speaker}} {{filename}}" type="checkbox" ng-model="checkedSpeakerOfTab[$parent.$index][$index]" ng-change="filterSpeaker(speaker, checkedSpeakerOfTab[$parent.$index][$index], filename, $parent.$index)" />
+                <label class="speakerCheckboxLabel-cdr {{speaker}} {{filename}}"for="checkbox-cdr {{speaker}} {{filename}}">{{speaker}} ({{countUtterancesSpeaker(speaker,$parent.$index)}} utterances)</label>
+              </div>
+            </div>
+            <div ng-show="checkedSpeaker[$index]" class="speakerBtnContainer-cdr {{filename}}">
+              <button type="button" class="btn btn-primary filterSpeakerClearBtn-cdr {{filename}}" ng-click="clearFilterSpeaker(filename, $index)"  disabled><i class="fa fa-remove cdr"></i></button>
+            </div>
+            <br>
+
+
+            <input id="topicsCheckBox-cdr {{filename}}" type="checkbox" ng-click="annotate_topics(checkedTopics[$index], filename, $index)" ng-model="checkedTopics[$index]">
+            <label class="checkboxLabel-cdr {{filename}}" for="topicsCheckBox-cdr {{filename}}">TOPICS</label>
+            <button type="button" class="btn btn-primary btn-circle" ng-click="launchTopicInfo($index)"><i class="fa fa-question cdr"></i></button>
+            <div ng-show="checkedTopics[$index]" class="topicsFilterList-cdr {{filename}}">
+              <text id="topicsText-cdr">Filter topics by:</text>
+              <div class="topicItem-cdr" ng-repeat="topic in topicNumbersList[$index]">
+                <input class="topicCheckbox-cdr topic{{topic}} {{filename}}" id="checkbox-cdr {{topic}} {{filename}}" type="checkbox" ng-model="checkedTopicsOfTab[$parent.$index][$index]" ng-change="filterTopics(topic, checkedTopicsOfTab[$parent.$index][$index], filename, $parent.$index)" />
+                <label class="topicCheckboxLabel-cdr topic{{topic}} {{filename}}"for="checkbox-cdr {{topic}} {{filename}}">Topic {{convertIntToRoman(topic,1)}} ({{countUtterancesTopics(topic,$parent.$index)}} utterances): {{getSomeTopicKeywords(topic,$parent.$index, 5)}}</label>
+              </div>
+            </div>
+            <div ng-show="checkedTopics[$index]" class="topicsBtnContainer-cdr {{filename}}">
+              <button type="button" class="btn btn-primary filterTopicsClearBtn-cdr {{filename}}" ng-click="clearFilterTopics(filename, $index)"  disabled><i class="fa fa-remove cdr"></i></button>
+            </div>
+            <br>
+
+            <hr class="toolContainerDivideLine-cdr">
+
+            <input id="glyphCheckBox-cdr {{filename}}" type="checkbox" ng-click="showGlyphFeatures(checkedGlyph[$index], filename, $index)" ng-model="checkedGlyph[$index]">
+            <label id="glyphLabel-cdr" class="checkboxLabel-cdr {{filename}}" for="glyphCheckBox-cdr {{filename}}">QUALITY MEASURES</label>
+            <button type="button" class="btn btn-primary btn-circle" ng-click="launchGlyphInfo($index)"><i class="fa fa-question cdr"></i></button>
+            <div ng-show="showMeasures.showMeasuresOfTab{{$index}}" class="measureListForGlyph-cdr {{filename}}">
+                <text id="measureText-cdr">Select up to 7 features:</text>
+                <div id="selectedMeasureItems-cdr" ng-hide="if (selectedMeasuresLists[$index].length < 0)" ng-repeat="selectedMeasureName in selectedMeasuresLists[$index]" >
+                  {{selectedMeasureName}}
+                </div>
+                <hr id="measureListDivideLine-cdr">
+                <div class="measureItem-cdr" ng-repeat="measureName in measureNamesList[$index]">
+                  <input class="measureCheckbox-cdr {{measureName.name | removeSpacesAndLowercase}} {{filename}}" id="checkbox-cdr {{measureName.name | removeSpacesAndLowercase}} {{filename}}" type="checkbox" ng-model="checkedMeasure" ng-change="updateMeasureList(measureName.name, checkedMeasure, $parent.$index)" />
+                  <label class="measureCheckboxLabel-cdr {{measureName.name | removeSpacesAndLowercase}} {{filename}}"for="checkbox-cdr {{measureName.name | removeSpacesAndLowercase}} {{filename}}">{{measureName.name}}</label>
+                </div>
+            </div>
+            <div ng-show="showMeasures.showMeasuresOfTab{{$index}}" class="glyphBtnContainer-cdr {{filename}}">
+              <button class="btn btn-primary glyphFullScreenBtn-cdr {{filename}}" ng-click="openFullScreen_glyph($index)" type="button" disabled><i class="fa fa-expand cdr"></i></button>
+              <div id="annotateRemoveBtnContainer-cdr {{filename}}">
+                <button class="btn btn-primary glyphAnnotateBtn-cdr {{filename}}" ng-click="annotate_glyph(filename, $index)" type="button" disabled>annotate</button>
+                <button type="button" class="btn btn-primary glyphRemoveBtn-cdr {{filename}}" ng-click="remove_glyph_annotation(filename, $index)"  disabled><i class="fa fa-remove cdr"></i></button>
+              </div>
+            </div>
+
+            <hr class="toolContainerDivideLine-cdr">
+
+            <input autocomplete="off" id="searchWords-cdr {{filename}}" type="search" class="form-control searchWords-cdr {{filename}}" search-for-words-enter="search_words(search, filename, $index)" ng-model="search" placeholder="Search for words" ng-change="cleanSearch(filename, $index)" ng-keydown="$event.keyCode != 32 ? $event : $event.preventDefault()">
+            <div class="foundNotfoundContainer-cdr" ng-if="searchWordsTab['searchWordsOfTab' + $index].found">
+              <div class="found-cdr {{filename}}" ng-model="found">Found {{searchWordsTab["searchWordsOfTab" + $index].foundCounter }}!</div>
+              <div class="prevNextBtnContainer-cdr">
+                <button type="button" class="btn btn-primary searchPreviousBtn-cdr {{filename}}" ng-click="navigate_through_highlighted_words_of_search($index, filename, 'prev')"><i class="fa fa-angle-left cdr"></i></button>
+                <button type="button" class="btn btn-primary searchNextBtn-cdr {{filename}}" ng-click="navigate_through_highlighted_words_of_search($index, filename,'next')"><i class="fa fa-angle-right cdr"></i></button>
+              </div>
+            </div>
+            <div ng-if="searchWordsTab['searchWordsOfTab' + $index].notFound" class="notFound-cdr {{filename}}" >Not found!</div>
+
+            <div class="btn-group btn-group-sm wordFreqBtnContainer-cdr" role="group">
+              <button id="wordFreqBtn-cdr" type="button" class="btn btn-primary" ng-click="createWordCloud(filename, $index)">WORD FREQUENCIES</button>
+              <button id="wordFreqInfoBtn-cdr" type="button" class="btn btn-primary" ng-click="launchWordFreqInfo()">?</button>
+            </div>
+
+
+            <hr class="toolContainerDivideLine-cdr">
+
+
+            <div class="btn-group btn-group-sm btn-group-overview-cdr {{filename}}" role="group">
+              <div class="btn-group btn-group-sm btn-group-dropdownOverview-cdr" uib-dropdown>
+                <button id="dropdownOverviewBtn-cdr {{filename}}" type="button" class="btn btn-primary dropdownOverviewBtn-cdr {{filename}} dropdown-toggle" uib-dropdown-toggle>
+                  OVERVIEW <span class="caret dropdownOverviewCaret-cdr"></span>
+                </button>
+                <ul class="dropdownOverviewMenuItemList-cdr" uib-dropdown-menu role="menu" aria-labelledby="dropdownOverviewBtn-cdr {{filename}}">
+                  <li class="dropdownOverviewMenuItem-cdr" role="menuitem" ng-click="renderOverview('DEFAULT',filename,$index)">DEFAULT</li>
+                  <li class="divider"></li>
+                  <li class="dropdownOverviewMenuItem-cdr" role="menuitem" ng-click="renderOverview(item,filename,$parent.$index)" ng-repeat="item in featureList">{{item}}</li>
+                </ul>
+              </div>
+              <button type="button" class="btn btn-primary btn-fullscreenOverview-cdr {{filename}}" ng-click="openFullScreenOverview(filename,$index)" disabled><i class="fa fa-expand cdr"></i></button>
+            </div>
+            <div class="dropdownOverviewSelectedItem-cdr">
+              <text class="dropdownOverviewSelectedItemText-cdr" >selected:</text>
+              <text class="dropdownOverviewSelectedItem-cdr">{{featureOverviewOfTab[$index]}}</text>
+            </div>
+
+
+
+          </div>
+          <div class="col-sm-7" id="text_container-cdr {{filename}}" ng-style="layoutTextContainer"><div content filename="filename" debate="debateList[$index]"  class="content {{filename}}"></div></div>
+          <div class="col-sm-3" id="overview_container-cdr {{filename}}" ng-style="layoutOverviewContainer"><div overview filename="filename" debate="debateList[$index]" speaker="speakerOrderList[$index]" topics="topicsList[$index][0]" debate-index="$index" class="overview {{filename}}"></div></div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+</div>

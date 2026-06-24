@@ -1,0 +1,68 @@
+<div class="modal-header cdr">
+  <h3 class="modal-title cdr" id="modal-title">FULL SCREEN MODE</h3>
+</div>
+
+<div class="modal-body cdr" id="modal-body-full-cdr">
+
+  <div id="fullScreenOverviewInfoContainer" style="width: fit-content; height: fit-content">
+
+    <!--checkbox for pixel-viz-->
+    <div id="checkboxShowAllUtterancesFullScreenContainer" style="display: none; margin-left: 20px">
+      <input id="checkboxShowAllOverviewFullScreen" type="checkbox" ng-model="checkedShowAllUtterancesFullScreen" ng-change="showAllUtterancesOverviewFullScreen(checkedShowAllUtterancesFullScreen)"/>
+      <label for="checkboxShowAllOverviewFullScreen" style="margin-left: 3px">show all utterances</label>
+    </div>
+    <!--checkbox for glyph-matrix-->
+    <div id="checkboxShowAllGlyphsFullScreenContainer" style="display: none; margin-left: 20px">
+      <input id="checkboxShowAllGlyphsFullScreen" type="checkbox" ng-model="checkedShowAllGlyphsFullScreen" ng-change="showAllGlyphsFullScreen(checkedShowAllGlyphsFullScreen)"/>
+      <label for="checkboxShowAllGlyphsFullScreen" style="margin-left: 3px">show all glyphs</label>
+    </div>
+  </div>
+
+  <div id="fullScreenContainer-cdr">
+
+    <!--checkboxes for named entities-->
+    <div ng-if="showCheckboxesNECategoriesFullScreen" class="viewOptionsNEOverviewFullScreen" style="display:flex; flex-direction:row; justify-content:space-evenly">
+      <div class="categoryNamedEntityItemFullScreen" ng-repeat="category in namedEntitiesList[debateIndex]">
+        <div ng-repeat="(key, _) in category">
+          <input class="categoryNamedEntityCheckboxFullScreen {{key}}" id="checkbox-cdr {{key}}" type="checkbox" ng-model="checkedNamedEntityCategoriesFullScreen[$parent.$index]" ng-change="showSelectedNamedEntityCategoriesFullScreen(key, checkedNamedEntityCategoriesFullScreen[$parent.$index])"/>
+          <label class="categoryNamedEntityCheckboxLabelFullScreen {{key}}" for="checkbox-cdr {{key}}">{{key}}</label>
+        </div>
+      </div>
+    </div>
+
+    <!--checkboxes for sentiment-->
+    <div ng-if="showCheckboxesSentimentCategoriesFullScreen" class="viewOptionsSentimentOverviewFullScreen" style="display:flex; flex-direction:row; align-content:flex-start">
+      <div style="margin-right: 10px">
+        <input class="categorySentimentCheckboxFullScreen negativeSentimentCheckboxFullScreen" id="checkbox-cdr negativeSentimentCheckboxFullScreen" type="checkbox" ng-model="checkedSentimentCategoriesFullScreen[0]" ng-change="showSelectedSentimentCategoriesFullScreen('negative', checkedSentimentCategoriesFullScreen[0])"/>
+        <label class="categoryNamedEntityCheckboxLabelFullScreen negativeSentimentCheckboxFullScreen" for="checkbox-cdr negativeSentimentCheckboxFullScreen">negative</label>
+      </div>
+      <div>
+        <input class="categorySentimentCheckboxFullScreen positiveSentimentCheckboxFullScreen" id="checkbox-cdr positiveSentimentCheckboxFullScreen" type="checkbox" ng-model="checkedSentimentCategoriesFullScreen[1]" ng-change="showSelectedSentimentCategoriesFullScreen('positive', checkedSentimentCategoriesFullScreen[1])"/>
+        <label class="categoryNamedEntityCheckboxLabelFullScreen positiveSentimentCheckboxFullScreen" for="checkbox-cdr positiveSentimentCheckboxFullScreen">positive</label>
+      </div>
+    </div>
+
+    <!--checkboxes for pos tags-->
+    <div ng-if="showCheckboxesPosCategoriesFullScreen" style="overflow: scroll">
+    <div class="viewOptionsPosOverviewFullScreen" style="display:flex; flex-direction:row;">
+      <div class="categoryPosItemFullScreen" ng-repeat="category in posTagSetList[debateIndex]" style="margin-right: 10px">
+        <input class="categoryPosCheckboxFullScreen" id="checkboxFullScreen{{category}}" type="checkbox" ng-model="checkedPosCategoriesFullScreen[$index]" ng-change="showSelectedPosCategoriesFullScreen(category, checkedPosCategoriesFullScreen[$index])" />
+        <label data-toggle="tooltip" title="{{pennTreeBankTags[category]}}" class="categoryPosCheckboxLabelFullScreen" for="checkboxFullScreen{{category}}">{{category}}</label>
+      </div>
+      <div class="categoryPosItemFullScreen">
+        <input class="categoryPosCheckboxFullScreen " id="checkboxFullScreenP" type="checkbox"  ng-model="checkedPosCategoriesFullScreen[posTagSetList[debateIndex].length]" ng-change="showSelectedPosCategoriesFullScreen('P', checkedPosCategoriesFullScreen[posTagSetList[debateIndex].length])" />
+        <label data-toggle="tooltip" title="punctuation" class="categoryPosCheckboxLabelFullScreen " for="checkboxFullScreenP"> P </label>
+      </div>
+    </div>
+
+    </div>
+
+  </div>
+
+
+
+</div>
+
+<div class="modal-footer cdr">
+  <button class="btn btn-primary btn-closeModal-cdr" id="btn-closeModal-fullScreen-cdr" type="button" ng-click="ok()">Ok</button>
+</div>

@@ -1,0 +1,545 @@
+<!doctype html>
+<html class="no-js" ng-app="visArgueClientApp">
+
+<head>
+  <base href="/">
+  <meta charset="utf-8">
+  <title ng-bind="title">LingVis.io</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+  <link rel="stylesheet" href="bower_components/angular-color-picker/angular-color-picker.css" />
+  <link rel="stylesheet" href="bower_components/angular-material-data-table/dist/md-data-table.css" />
+  <link rel="stylesheet" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css" />
+  <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.css" />
+  <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css" />
+  <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.css" />
+  <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+  <link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/argumentation.css">
+  <link rel="stylesheet" href="styles/episodes.css">
+  <link rel="stylesheet" href="styles/episodesWithGlyphs.css">
+  <link rel="stylesheet" href="styles/lexicalUnits.css">
+  <link rel="stylesheet" href="styles/namedEntities.css">
+  <link rel="stylesheet" href="styles/topicVisIHTM.css">
+  <link rel="stylesheet" href="styles/speakerProfiles.css">
+  <link rel="stylesheet" href="styles/statistics.css">
+  <link rel="stylesheet" href="styles/speakerProfiles.css">
+  <link rel="stylesheet" href="styles/version.css">
+  <link rel="stylesheet" href="styles/alignment.css">
+  <link rel="stylesheet" href="styles/preprocessing.css">
+  <link rel="stylesheet" href="styles/bubbleTalk.css">
+  <link rel="stylesheet" href="styles/topicSummarizer.css">
+  <link rel="stylesheet" href="styles/mdsVisualization.css">
+  <link rel="stylesheet" href="styles/topicMatching.css">
+  <link rel="stylesheet" href="styles/introjs.css">
+  <link rel="stylesheet" href="styles/introjs-styling.css">
+  <link rel="stylesheet" href="styles/ihtmStreaming.css">
+  <link rel="stylesheet" href="styles/backbone.css">
+  <link rel="stylesheet" href="styles/d3-context-menu.css">
+  <link rel="stylesheet" href="styles/threadReconstruction.css">
+  <link rel="stylesheet" href="styles/arguments.css">
+  <link rel="stylesheet" href="styles/contributors.css">
+  <link rel="stylesheet" href="styles/closeAndDistantReading.css">
+  <!-- endbuild -->
+
+
+  <script src="https://use.fontawesome.com/e38a82ab4e.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Merriweather:300,400,400i,700,700i,900,900i|Nothing+You+Could+Do|Spectral" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Cabin+Sketch:400,700" rel="stylesheet">
+
+  <link rel="stylesheet" href="/scripts/resources/d3-context-menu.css">
+
+</head>
+
+<body ng-cloak layout="column">
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+  your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- Add your site or application content here -->
+
+<!--<div layout="column" layout-fill ng-cloak>-->
+
+<header>
+  <md-toolbar layout="row" ng-controller="NavigationCtrl as ctrl" md-scroll-shrink class="gradient">
+    <div class="md-toolbar-tools">
+      <img src="images/LingVISio.png" width="200px" alt="LingVis Client">
+      <span flex></span>
+
+      <a href="https://twitter.com/intent/tweet?button_hashtag=LingVISio" class="twitter-hashtag-button"
+         data-text="Check out the lingvis.io web-framework for visual text analytics."
+         data-url="http://demo.lingvis.io/" data-related="manunna_91,dbvis,lingvisio" data-show-count="false">Tweet #LingVISio</a><script
+         async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+      <md-button class="navbutton" ng-href="http://lingvis.io/">Project Information</md-button>
+
+      <md-button class="navbutton" ui-sref="contributors()">Contributors</md-button>
+
+      <md-button ui-sref-active="active" class="navbutton" ng-show="isLoggedIn() === true" ui-sref="preprocessing()">
+        Preprocessing
+      </md-button>
+
+
+      <md-menu ng-show="preprocessing.ispreprocessed" class="navbutton">
+        <md-button class="navbutton" aria-label="Open visualizations menu" ng-click="$mdMenu.open($event)">
+          Visualizations
+        </md-button>
+        <md-menu-content width="4">
+          <md-menu-item ng-show="vissel.argumentation.selected === true">
+            <md-button ui-sref-active="active" ui-sref="argumentation()">
+              Argumentation
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="vissel.topicSpace.selected === true">
+            <md-button ui-sref-active="active" ui-sref="topicSpace({id: 3, all: 1})">
+              Topic Space
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="vissel.episodes.selected === true">
+            <md-button ui-sref-active="active" ui-sref="episodes()">
+              Episodes
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="vissel.lexicalunits.selected === true">
+            <md-button ui-sref-active="active" ui-sref="lexicalUnits()">
+              Lexical Units
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="vissel.namedentities.selected === true">
+            <md-button ui-sref-active="active" ui-sref="namedEntities()">
+              Named Entities
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="vissel.ihtmVis.selected === true">
+            <md-button ui-sref-active="active" ui-sref="ihtmVis()">
+              IHTM Visualization
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="vissel.statistics.selected === true">
+            <md-button ui-sref-active="active" ui-sref="statistics()">
+              Statistics
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="vissel.speakerbusinesscards.selected === true">
+            <md-button ui-sref-active="active" ui-sref="speakerBusinessCards()">
+              Speaker Business Cards
+            </md-button>
+          </md-menu-item>
+          <md-menu-item
+            ng-show="vissel.topicmodelingIHTM.selected === true || visualizations.topicmodelingLDA.selected === true">
+            <md-button ui-sref-active="active" ui-sref="topicmodelling()">
+              Topic Modelling
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="vissel.alignment.selected === true">
+            <md-button ui-sref-active="active" ui-sref="alignment.features">
+              Alignment Analysis
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="vissel.bubbleTalk.selected === true">
+            <md-button ui-sref-active="active" ui-sref="bubbleTalk()">
+              Bubble Talk
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="vissel.topicsummarizer.selected === true">
+            <md-button ui-sref-active="active" ui-sref="topicsummarizer()">
+              Topic Summarizer
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="vissel.mdsVisualization.selected === true">
+            <md-button ui-sref-active="active" ui-sref="mdsVisualization()">
+              MDS Visualization
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="vissel.topicMatching.selected === true">
+            <md-button ui-sref-active="active" ui-sref="topicMatching()">
+              Topic Matching
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="vissel.closeAndDistantReading.selected === true">
+            <md-button ui-sref-active="active" ui-sref="closeAndDistantReading()">
+              Close And Distant Reading
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="vissel.threadReconstruction.selected === true">
+            <md-button ui-sref-active="active" ui-sref="threadReconstruction()">
+              Thread Reconstruction
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="vissel.arguments.selected === true">
+            <md-button ui-sref-active="active" ui-sref="arguments()">
+              Argumentation Annotation
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+
+      <md-button ui-sref-active="active" class="navbutton" ui-sref="login()" ng-show="!isLoggedIn()">Sign In</md-button>
+
+      <!--
+              <md-button ng-show="ctrl.sidebar.hasDetails()" ng-click="ctrl.sidebar.toggleDetails()" class="navbutton md-fab md-primary md-mini" aria-label="More">
+                      <md-icon class="material-icons">details</md-icon>
+              </md-button>
+-->
+      <md-button ng-show="ctrl.sidebar.hasSettings()" ng-click="ctrl.sidebar.toggleSettings()" class="md-icon-button"
+                 aria-label="More">
+        <md-tooltip>
+          Settings
+        </md-tooltip>
+        <md-icon class="material-icons navbutton">settings</md-icon>
+      </md-button>
+
+      <md-menu ng-show="isLoggedIn()" class="navbutton">
+        <md-button class="md-icon-button" aria-label="Open profile menu" ng-click="$mdMenu.open($event)">
+          <md-tooltip>
+            Profile
+          </md-tooltip>
+          <md-icon class="material-icons navbutton">person</md-icon>
+        </md-button>
+        <md-menu-content width="4">
+          <md-menu-item>
+            <md-button ui-sref-active="active" class="navbutton" ui-sref="profile()">Edit Profile</md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="hasRole('ROLE_ADMIN')">
+            <md-button ui-sref-active="active" class="navbutton" ui-sref="users()">Users</md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="hasRole('ROLE_ADMIN')">
+            <md-button ui-sref-active="active" class="navbutton" ui-sref="sessions()">Sessions</md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="hasRole('ROLE_ADMIN')">
+            <md-button ui-sref-active="active" class="navbutton" ui-sref="metrics()">Metrics</md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="hasRole('ROLE_ADMIN')">
+            <md-button ui-sref-active="active" class="navbutton" ui-sref="apiurl()">API URL</md-button>
+          </md-menu-item>
+          <md-menu-item>
+            <md-button class="navbutton" ng-click="logout()">Sign Out</md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+
+      <md-button id="globalhelp" ng-controller="HelpCtrl as helpctrl" ng-click="helpctrl.openHelp($event)" class="md-icon-button"
+                 aria-label="More">
+        <md-tooltip>
+          Help
+        </md-tooltip>
+        <md-icon class="material-icons navbutton">help</md-icon>
+      </md-button>
+
+
+    </div>
+  </md-toolbar>
+</header>
+
+
+<main>
+  <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="sidebar-details">
+    <md-toolbar ng-controller="SideBarCtrl as sectrl" class="md-theme-light">
+      <div class="md-toolbar-tools">
+        <h1 class="md-toolbar-tools">Details</h1>
+        <md-button ng-click="sectrl.toggleDetailsBar()" class="md-icon-button" aria-label="More">
+          <md-icon class="material-icons">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-content ui-view="sidebar-details" layout-padding></md-content>
+  </md-sidenav>
+
+
+  <md-content ui-view></md-content>
+
+
+  <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="sidebar-settings">
+    <md-toolbar ng-controller="SideBarCtrl as sectrl" class="md-theme-light">
+      <div class="md-toolbar-tools">
+        <h1 class="md-toolbar-tools">Settings</h1>
+        <md-button ng-click="sectrl.toggleSettingsBar()" class="md-icon-button" aria-label="More">
+          <md-icon class="material-icons">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-content ui-view="sidebar-settings" layout-padding
+                style="height: calc(100% - 64px)"></md-content>
+  </md-sidenav>
+</main>
+
+<footer ng-controller="FooterCtrl as c" ng-cloak>
+  <div layout="column">
+    <p id="withlove" class="version"><span class="glyphicon glyphicon-heart"></span> from the <a href="http://lingvis.io/">lingvis.io</a> team</p>
+    <p class="version">Active sessions: {{c.numSessions}}</p>
+    <p id="serverversion" class="version">Server: [{{c.server.environment}}] {{c.server.hostname}} - <a
+      ng-href="https://gitlab.dbvis.de/visargue/server/commit/{{c.server.fullcommit}}">{{c.server.environment ===
+      'production' ? c.server.version : c.server.commit}}</a> - {{c.server.buildtime}}</p>
+    <p class="version">Client: [{{c.client.environment}}] {{c.client.hostname}} - <a
+      ng-href="https://gitlab.dbvis.de/visargue/client/commit/{{c.client.fullcommit}}">{{c.client.environment ===
+      'production' ? c.client.version : c.client.commit}}</a> - {{c.client.buildtime}}</p>
+
+    <p class="version" ng-show="hasRole('ROLE_ADMIN') || c.client.environment === 'development'">
+      API URL: <a ui-sref="apiurl()">{{c.apiurl}}</a></p>
+  </div>
+</footer>
+<!--</div>-->
+
+<!-- we still leave it here as grunt wiredep will not add it to the bower section when it's loaded here
+    apparently it should be loaded before all other packages -->
+<script src="bower_components/google-closure-library/closure/goog/base.js"></script>
+
+<!-- build:js(.) scripts/oldieshim.js -->
+<!--[if lt IE 9]>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/json3/lib/json3.js"></script>
+<![endif]-->
+<!-- endbuild -->
+
+<!-- do NOT include webcomponents and polymer js files here -->
+<!-- build:js(.) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/json3/lib/json3.js"></script>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-aria/angular-aria.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-messages/angular-messages.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/intro.js/intro.js"></script>
+<script src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
+<script src="bower_components/d3/d3.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
+<script src="bower_components/d3-tip/index.js"></script>
+<script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+<script src="bower_components/underscore/underscore.js"></script>
+<script src="bower_components/numericjs/src/numeric.js"></script>
+<script src="bower_components/spinjs/spin.js"></script>
+<script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
+<script src="bower_components/smartmenus/dist/jquery.smartmenus.js"></script>
+<script src="bower_components/jquery-ui/jquery-ui.js"></script>
+<script src="bower_components/ngmap/build/scripts/ng-map.js"></script>
+<script src="bower_components/angular-color-picker/angular-color-picker.js"></script>
+<script src="bower_components/box2dweb/Box2dWeb-2.1.a.3.js"></script>
+<script src="bower_components/visual-sedimentation/dist/visual-sedimentation.js"></script>
+<script src="bower_components/angular-validation-match/dist/angular-validation-match.min.js"></script>
+<script src="bower_components/angular-material-data-table/dist/md-data-table.js"></script>
+<script src="bower_components/angular-bind-html-compile/angular-bind-html-compile.js"></script>
+<script src="bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
+<script src="bower_components/mdRangeSlider/dist/md-range-slider.js"></script>
+<script src="bower_components/ngstorage/ngStorage.js"></script>
+<script src="bower_components/sockjs-client/dist/sockjs.js"></script>
+<script src="bower_components/Matter/build/matter.js"></script>
+<script src="bower_components/stomp-websocket/lib/stomp.min.js"></script>
+<script src="bower_components/ng-stomp/src/ng-stomp.js"></script>
+<script src="bower_components/angular-toArrayFilter/toArrayFilter.js"></script>
+<script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
+<script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+<script src="bower_components/ng-tags-input/ng-tags-input.js"></script>
+<script src="bower_components/angular-dragdrop/src/angular-dragdrop.js"></script>
+<script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+<script src="bower_components/angularjs-dropdown-multiselect/src/angularjs-dropdown-multiselect.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/d3-color/dist/d3-color.js"></script>
+<script src="bower_components/d3-hierarchy/dist/d3-hierarchy.js"></script>
+<script src="bower_components/d3-hsv/build/d3-hsv.js"></script>
+<script src="bower_components/d3-interpolate/dist/d3-interpolate.js"></script>
+<script src="bower_components/d3-quadtree/dist/d3-quadtree.js"></script>
+<script src="bower_components/d3-scale/dist/d3-scale.js"></script>
+<script src="bower_components/d3-scale-chromatic/dist/d3-scale-chromatic.js"></script>
+<script src="bower_components/angularjs-slider/dist/rzslider.js"></script>
+<script src="bower_components/jsep/src/jsep.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+
+<script src="scripts/resources/treecut.js"></script>
+<script src="scripts/resources/rough.js"></script>
+<script src="scripts/resources/d3-path-morphing.js"></script>
+<script src="scripts/resources/cola.js"></script>
+
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="scripts/resources/treecut.js"></script>
+<script src="scripts/app.js"></script>
+<script src="scripts/app.constants.js"></script>
+<script src="scripts/app.apiurl.js"></script>
+<script src="scripts/services/visarguetour.js"></script>
+<script src="scripts/services/alertservice.js"></script>
+<script src="scripts/services/socketservice.js"></script>
+<script src="scripts/services/version.js"></script>
+<script src="scripts/resources/users.js"></script>
+<script src="scripts/controllers/main.js"></script>
+<script src="scripts/controllers/preprocessing.js"></script>
+<script src="scripts/controllers/login.js"></script>
+<script src="scripts/controllers/apiurl.js"></script>
+<script src="scripts/libraries/colorLibrary/hsluv-0.0.3.min.js"></script>
+
+
+<script src="scripts/resources/d3-context-menu.js"></script>
+
+<!-- google analytics tracker -->
+<script src="scripts/app.analytics.js"></script>
+
+<!-- Side bar files -->
+<script src="scripts/controllers/SideBar.js"></script>
+<script src="scripts/controllers/LeftSideBar.js"></script>
+<script src="scripts/controllers/RightSideBar.js"></script>
+<script src="scripts/controllers/DetailSideBar.js"></script>
+<script src="scripts/controllers/DetailSideBarForLexicalUnits.js"></script>
+<script src="scripts/controllers/DetailSideBarForEpisodes.js"></script>
+<script src="scripts/controllers/SettingsSideBar.js"></script>
+<script src="scripts/controllers/SettingsSideBarForNamedEntities.js"></script>
+<script src="scripts/controllers/SettingsSideBarForEpisodes.js"></script>
+<script src="scripts/controllers/SettingsSideBarForTopicSummarizer.js"></script>
+<script src="scripts/controllers/SettingsSideBarForMdsVisualization.js"></script>
+<script src="scripts/controllers/SettingsSideBarForTopicMatching.js"></script>
+<script src="scripts/controllers/SettingsSideBarForThreadReconstruction.js"></script>
+<script src="scripts/controllers/argumentation/colorbrewer.js"></script>
+<!-- Demo files -->
+<script src="scripts/controllers/demo/main.js"></script>
+<script src="scripts/controllers/demo/demo.js"></script>
+<!-- Argumentation files -->
+<script src="scripts/controllers/argumentation/_vs.chart.topicsCircle.js"></script>
+<script src="scripts/controllers/argumentation/argumentationData.js"></script>
+<script src="scripts/controllers/argumentation/helperFunctions.js"></script>
+<script src="scripts/controllers/argumentation/glyphInformation.js"></script>
+<script src="scripts/controllers/argumentation/glyph.js"></script>
+<script src="scripts/controllers/argumentation/main.js"></script>
+<script src="scripts/controllers/argumentation/kmeans.js"></script>
+<script src="scripts/controllers/argumentation/clusters.js"></script>
+<script src="scripts/controllers/argumentation/pca.js"></script>
+<script src="scripts/controllers/argumentation/topic.js"></script>
+<script src="scripts/controllers/argumentation/measureBox.js"></script>
+<script src="scripts/controllers/argumentation/subDimensionRow.js"></script>
+<script src="scripts/controllers/argumentation/dimensionGlyph.js"></script>
+<script src="scripts/controllers/argumentation/newGlyphs.js"></script>
+<script src="scripts/controllers/argumentation/table.js"></script>
+<script src="scripts/controllers/argumentation/argumentation.js"></script>
+<script src="scripts/controllers/topicSpace/main.js"></script>
+<script src="scripts/controllers/topicSpace/topicSpace.js"></script>
+<!-- Episodes files -->
+<script src="scripts/controllers/episodes/main.js"></script>
+<script src="scripts/controllers/episodes/episodes.js"></script>
+<!-- Episodes with glyphs files -->
+<script src="scripts/controllers/episodesWithGlyphs/main.js"></script>
+<script src="scripts/controllers/episodesWithGlyphs/episodesWithGlyphs.js"></script>
+<!-- Lexical Units files -->
+<script src="scripts/controllers/lexicalUnits/main.js"></script>
+<script src="scripts/controllers/lexicalUnits/lexicalUnits.js"></script>
+<!-- named entities -->
+<script src="scripts/controllers/namedEntities/edge_bundling_d3.js"></script>
+<script src="scripts/controllers/namedEntities/main.js"></script>
+<script src="scripts/controllers/namedEntities/namedEntities.js"></script>
+<!-- IHTM Vis -->
+<script src="scripts/controllers/topicVisIHTM/main.js"></script>
+<script src="scripts/controllers/topicVisIHTM/topicVisIHTM.js"></script>
+<script src="scripts/controllers/topicmodelling.js"></script>
+<!-- speaker profiles -->
+<script src="scripts/controllers/speakerBusinessCards.js"></script>
+<script src="scripts/services/displaySpeakers.js"></script>
+<script src="scripts/services/glyphInfoService.js"></script>
+<script src="scripts/services/presentSpeakersService.js"></script>
+
+<!-- statistics -->
+<script src="scripts/controllers/statistics/box.js"></script>
+<script src="scripts/controllers/statistics/main.js"></script>
+<script src="scripts/controllers/statistics/statistics.js"></script>
+<script src="scripts/controllers/speakers.js"></script>
+<script src="scripts/resources/speakers.js"></script>
+<script src="scripts/directives/speakerInfo.js"></script>
+<script src="scripts/services/speakers.js"></script>
+<script src="scripts/controllers/footer.js"></script>
+<script src="scripts/controllers/users.js"></script>
+<script src="scripts/directives/confirmdelete.js"></script>
+<script src="scripts/directives/validfile.js"></script>
+<script src="scripts/controllers/alignment.js"></script>
+<script src="scripts/controllers/alignmentvis.js"></script>
+<script src="scripts/controllers/alignment.text.js"></script>
+<script src="scripts/services/alignment.events.js"></script>
+<script src="scripts/controllers/alignment.colors.js"></script>
+<script src="scripts/directives/alignmentchart.js"></script>
+<script src="scripts/directives/patterndrawer.js"></script>
+<script src="scripts/services/alignmentutils.js"></script>
+<script src="scripts/services/EventColorizerFacade.js"></script>
+<script src="scripts/services/EventColorizerHUSL.js"></script>
+<script src="scripts/services/EventColorizerD3Cat.js"></script>
+<script src="scripts/services/featuresorter.js"></script>
+<script src="scripts/directives/dragQuery.js"></script>
+<script src="scripts/directives/dragQueryEntityList.js"></script>
+<script src="scripts/directives/dragFirstEntityGroup.js"></script>
+<script src="scripts/controllers/profile.js"></script>
+<script src="scripts/resources/sessions.js"></script>
+<script src="scripts/controllers/sessions.js"></script>
+<script src="scripts/controllers/metrics.js"></script>
+<script src="scripts/controllers/sidebarglobal.js"></script>
+<script src="scripts/services/sidebar.js"></script>
+<script src="scripts/controllers/navigation.js"></script>
+<script src="scripts/services/sidebarNamedEntities.js"></script>
+<script src="scripts/filters/stepname.js"></script>
+<script src="scripts/controllers/help.js"></script>
+<script src="scripts/directives/alignment.barchart.js"></script>
+<script src="scripts/controllers/alignment.featuresorter.js"></script>
+<!-- bubble talk -->
+<script src="scripts/controllers/bubbleTalk/main.js"></script>
+<script src="scripts/controllers/bubbleTalk/bubbleTalk.js"></script>
+<!-- topic summarizer -->
+<script src="scripts/controllers/topicSummarizer/main.js"></script>
+<script src="scripts/controllers/topicSummarizer/topicSummarizer.js"></script>
+<!-- mds visualization -->
+<script src="scripts/controllers/mdsVisualization/mdsjs.js"></script>
+<script src="scripts/controllers/mdsVisualization/main.js"></script>
+<script src="scripts/controllers/mdsVisualization/mdsVisualization.js"></script>
+<!-- topic matching vis -->
+<script src="scripts/controllers/topicMatching/main.js"></script>
+<script src="scripts/controllers/topicMatching/topicMatching.js"></script>
+<!-- ihtm streaming -->
+<script src="scripts/directives/ihtmStreamingTree.js"></script>
+<script src="scripts/directives/ihtmStreamingTimeline.js"></script>
+<script src="scripts/directives/ihtmStreamingCorrelationMatrix.js"></script>
+<script src="scripts/controllers/IHTMStreamingDetailController.js"></script>
+<script src="scripts/controllers/IHTMStreamingSettingsController.js"></script>
+<script src="scripts/services/ihtmStreamingColorService.js"></script>
+<script src="scripts/services/ihtmStreamingDataService.js"></script>
+<script src="scripts/services/ihtmStreamingTreeMockDataService.js"></script>
+<!-- close and distant reading -->
+<script src="scripts/controllers/closeAndDistantReading/main.js"></script>
+<script src="scripts/controllers/SettingsSideBarForCloseAndDistantReading.js"></script>
+<!--<script src="https://d3js.org/d3-hierarchy.v1.min.js"></script>-->
+<!-- thread reconstruction vis -->
+<script src="scripts/controllers/threadReconstruction/threadReconstruction.js"></script>
+<script src="scripts/directives/threadReconstruction/threadReconstruction.tree.js"></script>
+<script src="scripts/directives/threadReconstruction/threadReconstruction.givenTree.js"></script>
+<script src="scripts/directives/threadReconstruction/threadReconstruction.pipeline.js"></script>
+<script src="scripts/directives/threadReconstruction/threadReconstruction.forest.js"></script>
+<script src="scripts/services/threadReconstruction/threadReconstruction.selectedMessage.js"></script>
+<script src="scripts/services/threadReconstruction/threadReconstruction.settingsData.js"></script>
+<script src="scripts/directives/threadReconstruction/threadReconstruction.sandbox.js"></script>
+<script src="scripts/services/threadReconstruction/threadReconstruction.sandboxData.js"></script>
+<script src="scripts/services/threadReconstruction/threadReconstruction.tooltip.js"></script>
+<script src="scripts/services/threadReconstruction/threadReconstruction.settingsTooltip.js"></script>
+<script src="scripts/services/threadReconstruction/threadReconstruction.helperTemplates.js"></script>
+<script src="scripts/services/threadReconstruction/threadReconstruction.parentChildSpace.js"></script>
+<script src="scripts/services/threadReconstruction/threadReconstruction.messageSortingFunction.js"></script>
+<script src="scripts/services/threadReconstruction/threadReconstruction.simpleSlider.js"></script>
+<!-- argumentation annotation -->
+<script src="scripts/controllers/arguments/main.js"></script>
+<script src="scripts/controllers/arguments/arguments.js"></script>
+<script src="scripts/controllers/arguments/SettingsSideBar.js"></script>
+<script src="scripts/directives/arguments/arguments.js"></script>
+<script src="scripts/directives/arguments/argumentTooltip.js"></script>
+<!-- endbuild -->
+</body>
+
+</html>

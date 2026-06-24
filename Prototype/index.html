@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!--d3 lib-->
+        <script src="https://d3js.org/d3.v5.js"></script>
+        <!--angularJS lib-->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <!--bootstrap lib-->
+        <!--
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        -->
+        
+        <!--further angluarJS dependencies for modal window-->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-touch.min.js"></script>
+        <!--angularJS ui.bootstrap lib-->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
+
+        <!--own script-->
+        <script src="app.js"></script>
+        
+        <!--bootstrap css-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <!--font-awesome css-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!--my css-->
+        <link rel="stylesheet" href="app.css">
+    </head>
+<body>
+
+    
+<div ng-app="myApp" ng-controller="myCtrl" id="main">
+
+   
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-3">
+          
+            <input id="pos" type="checkbox" ng-click="annotate_pos(posChecked)" ng-model="posChecked">
+            <label for="pos">POS</label>
+            <br>
+          
+          
+            <input id="sentiment" type="checkbox" ng-click="annotate_sentiment(sentimentChecked)" ng-model="sentimentChecked">
+            <label for="sentiment">SENTIMENT</label>
+            <button type="button" class="btn btn-primary btn-circle" ng-click="launchSentimentInfo()"><i class="fa fa-question"></i></button>
+            <br>
+
+            <input id="speaker" type="checkbox" ng-click="annotate_speaker(speakerChecked)" ng-model="speakerChecked">
+            <label for="speaker">SPEAKER</label>
+        
+        </div>
+        <div class="col-sm-7" id="text_container"> 
+            <div content class="content"></div>
+        </div>
+        <div id="overview_container" class="col-sm-2">
+            <div overview class="overview"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+        <div id="test-container">
+            <svg id="test-svg"></svg>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>
